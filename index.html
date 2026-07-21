@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -8,7 +8,18 @@
   </head>
   <body>
     <div id="app">
-      <header><h1>MySchool</h1></header>
+      <header>
+        <h1>MySchool</h1>
+        <nav>
+          <ul>
+            <li>
+              <a href="/src/pages/cadastrarCurso.html">
+                <img src="/public/icons/graduation-cap.png" alt="Cursos" />
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
       <main>
         <section>
           <h2>Alunos Cadastrados no Sistema</h2>
@@ -18,7 +29,7 @@
 
         <section>
           <h2>Formulário de Cadastro</h2>
-          <form>
+          <form id="form-aluno">
             <label>
               Nome
               <input
@@ -50,9 +61,7 @@
 
             <label>
               Escolha o seu Curso:
-              <select name="curso" id="cursos">
-                <option value="" disabled selected>Selecione uma opção</option>
-              </select>
+              <select name="curso" id="cursos"></select>
             </label>
 
             <div>

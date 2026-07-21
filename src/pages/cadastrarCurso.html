@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +9,45 @@
   <body>
     <div id="app">
       <header><h1>MySchool</h1></header>
-      <main></main>
+      <main>
+        <section>
+          <h2>Cursos Cadastrados no Sistema</h2>
+          <div class="cursos-cadastrados">
+            <p>Nenhum curso cadastrado ainda.</p>
+          </div>
+        </section>
+
+        <section>
+          <h2>Formulário de Cadastro de Curso</h2>
+          <form id="form-curso">
+            <label>
+              Nome do Curso
+              <input
+                type="text"
+                name="nome"
+                placeholder="Digite o nome do curso"
+                required
+              />
+            </label>
+
+            <label>
+              Período
+              <input
+                type="number"
+                name="periodo"
+                min="1"
+                placeholder="Digite o período"
+                required
+              />
+            </label>
+
+            <div>
+              <button type="submit">Cadastrar</button>
+              <button type="reset">Limpar</button>
+            </div>
+          </form>
+        </section>
+      </main>
       <footer>
         <p>Seu ensino sobre controle. Developed by Allan, Ashley e Erik.</p>
       </footer>

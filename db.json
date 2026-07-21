@@ -1,4 +1,48 @@
 {
-  "aluno": [],
-  "curso": []
+  "aluno": [
+    {
+      "nome": "Allan Gabriel",
+      "dtNascimento": "2003-11-11T00:00:00.000Z",
+      "sexo": "M",
+      "cursoId": "7TmIdRdzyjo",
+      "id": "OhcKPsUB0xo"
+    },
+    {
+      "nome": "Ashley Andrade",
+      "dtNascimento": "2004-11-26T00:00:00.000Z",
+      "sexo": "F",
+      "cursoId": "7TmIdRdzyjo",
+      "id": "FRIRx8bGZBc"
+    },
+    {
+      "nome": "Helio Marcus",
+      "dtNascimento": "2007-05-10T00:00:00.000Z",
+      "sexo": "M",
+      "cursoId": "F5OsD_G88Rs",
+      "id": "8ECLCnXDXxI"
+    }
+  ],
+  "curso": [
+    {
+      "id": "7TmIdRdzyjo",
+      "nome": "Banco de Dados I",
+      "periodo": 3
+    },
+    {
+      "id": "F5OsD_G88Rs",
+      "nome": "Banco de Dados II",
+      "periodo": 4
+    },
+    {
+      "nome": "Python",
+      "periodo": 1,
+      "id": "RBbFJedugVY"
+    },
+    {
+      "nome": "Lógica de Programação",
+      "periodo": 1,
+      "id": "geo9phSK13M"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
