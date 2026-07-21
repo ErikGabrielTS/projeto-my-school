@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MySchool</title>
+  </head>
+  <body>
+    <div id="app">
+      <header><h1>MySchool</h1></header>
+      <main>
+        <section>
+          <h2>Alunos Cadastrados no Sistema</h2>
+
+          <div class="alunos-cadastrados"></div>
+        </section>
+
+        <section>
+          <h2>Formulário de Cadastro</h2>
+          <form>
+            <label>
+              Nome
+              <input
+                type="text"
+                name="nome"
+                placeholder="Digite o seu nome"
+                required
+              />
+            </label>
+
+            <label>
+              Data de Nascimento
+              <input type="date" name="nascimento" required />
+            </label>
+
+            <fieldset>
+              <legend>Sexo</legend>
+
+              <label>
+                <input type="radio" name="sexo" value="M" required />
+                Masculino
+              </label>
+
+              <label>
+                <input type="radio" name="sexo" value="F" />
+                Feminino
+              </label>
+            </fieldset>
+
+            <label>
+              Escolha o seu Curso:
+              <select name="curso" id="cursos">
+                <option value="" disabled selected>Selecione uma opção</option>
+              </select>
+            </label>
+
+            <div>
+              <button type="submit">Cadastrar</button>
+              <button type="reset">Limpar</button>
+            </div>
+          </form>
+        </section>
+      </main>
+      <footer>
+        <p>Seu ensino sobre controle. Developed by Allan, Ashley e Erik.</p>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
