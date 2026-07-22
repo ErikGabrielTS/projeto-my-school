@@ -5,7 +5,7 @@ import type Aluno from "./types/Aluno";
 import type Curso from "./types/Curso";
 
 const studentForm =
-  document.querySelector<HTMLFormElement>("form-aluno") || null;
+  document.querySelector<HTMLFormElement>("#form-aluno") || null;
 const cursoForm =
   document.querySelector<HTMLFormElement>("#form-curso") || null;
 const cursosSelect =

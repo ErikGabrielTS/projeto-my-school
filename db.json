@@ -20,6 +20,13 @@
       "sexo": "M",
       "cursoId": "F5OsD_G88Rs",
       "id": "8ECLCnXDXxI"
+    },
+    {
+      "nome": "Toni Chocolate",
+      "dtNascimento": "2004-12-07T00:00:00.000Z",
+      "sexo": "F",
+      "cursoId": "h4JQGSBRIEA",
+      "id": "cM2MGVheatQ"
     }
   ],
   "curso": [
@@ -42,6 +49,11 @@
       "nome": "Lógica de Programação",
       "periodo": 1,
       "id": "geo9phSK13M"
+    },
+    {
+      "nome": "UX/UI",
+      "periodo": 3,
+      "id": "h4JQGSBRIEA"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
