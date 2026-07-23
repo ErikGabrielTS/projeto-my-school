@@ -41,7 +41,7 @@ export const updateCurso = async (id: string, curso: Curso) => {
   return await response.json();
 };
 
-export const deleteAluno = async (id: string): Promise<boolean> => {
+export const deleteCurso = async (id: string): Promise<boolean> => {
   const response = await fetch(`${baseUrl}/curso/${id}`, {
     method: "DELETE",
   });

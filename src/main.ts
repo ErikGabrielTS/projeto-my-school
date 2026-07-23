@@ -9,6 +9,7 @@ import {
   createCurso,
   getAllCurso,
   getCursoById,
+  updateCurso,
 } from "./services/CursoService";
 import "./style.css";
 import type Aluno from "./types/Aluno";
@@ -24,11 +25,19 @@ const alunosCadastradosTbody =
   document.querySelector<HTMLDivElement>("#alunos-cadastrados__tbody") || null;
 const emptyMessageP =
   document.querySelector<HTMLParagraphElement>("#empty-message") || null;
+const cursosCadastradosTbody =
+  document.querySelector<HTMLDivElement>("#alunos-cadastrados__tbody") || null;
+const cursosCadastradosTable =
+  document.querySelector<HTMLTableElement>("#cursos-cadastrados__table") ||
+  null;
+const cursosEmptyMessageP =
+  document.querySelector<HTMLParagraphElement>(".cursos-cadastrados p") || null;
 
 const alunosCadastradosTable =
   document.querySelector<HTMLDivElement>("#alunos-cadastrados__table") || null;
 
 let alunoEditandoId: string | null = null;
+let cursoEditandoId: string | null = null;
 
 const showFeedback = (message: string) => {
   const existingFeedback = document.querySelector(".feedback-cadastro");
@@ -81,7 +90,7 @@ studentForm?.addEventListener("submit", async (evt) => {
   }
 });
 
-cursoForm?.addEventListener("submit", (evt) => {
+cursoForm?.addEventListener("submit", async (evt) => {
   evt.preventDefault();
 
   const formData = new FormData(cursoForm);
@@ -91,9 +100,27 @@ cursoForm?.addEventListener("submit", (evt) => {
     periodo: Number(formData.get("periodo")),
   };
 
-  createCurso(curso);
-  showFeedback("Curso cadastrado com sucesso!");
-  cursoForm.reset();
+  try {
+    if (cursoEditandoId) {
+      await updateCurso(cursoEditandoId, curso);
+      showFeedback("Curso atualizado com sucesso!");
+      cursoEditandoId = null;
+
+      const submitBtn = cursoForm.querySelector<HTMLButtonElement>(
+        "button[type='submit']",
+      );
+      if (submitBtn) submitBtn.textContent = "Cadastrar";
+    } else {
+      await createCurso(curso);
+      showFeedback("Curso cadastrado com sucesso!");
+    }
+
+    cursoForm.reset();
+    await listarCursos();
+  } catch (error) {
+    console.error("Erro ao salvar curso:", error);
+    showFeedback("Erro ao salvar dados do curso.");
+  }
 });
 
 const listarAlunos = async () => {
@@ -218,7 +245,7 @@ if (alunosCadastradosTbody) {
         const submitBtn = studentForm.querySelector<HTMLButtonElement>(
           "button[type='submit']",
         );
-        if (submitBtn) submitBtn.textContent = "Atualizar Aluno";
+        if (submitBtn) submitBtn.textContent = "Atualizar";
 
         studentForm.scrollIntoView({ behavior: "smooth" });
       }
@@ -226,5 +253,80 @@ if (alunosCadastradosTbody) {
   });
 }
 
+// Page cadastrarCurso.html
+
+const listarCursos = async () => {
+  const cursos: Curso[] = await getAllCurso();
+
+  if (cursosCadastradosTbody && cursosCadastradosTable && cursosEmptyMessageP) {
+    if (cursos.length === 0) {
+      cursosCadastradosTable.classList.add("disabled");
+      cursosEmptyMessageP.classList.remove("disabled");
+      cursosCadastradosTbody.innerHTML = "";
+      return;
+    }
+
+    cursosCadastradosTable.classList.remove("disabled");
+    cursosEmptyMessageP.classList.add("disabled");
+
+    const tbodyContent = cursos
+      .map(
+        (curso) => `
+      <tr>
+        <td>${curso.nome}</td>
+        <td>${curso.periodo}</td>
+        <td class="acoes">
+          <button type="button" class="btn-acao" title="Editar" data-id="${curso.id}">
+            <img src="/icons/edit.png" alt="Editar" />
+          </button>
+        </td>
+      </tr>
+    `,
+      )
+      .join("");
+
+    cursosCadastradosTbody.innerHTML = tbodyContent;
+  }
+};
+
+if (cursosCadastradosTbody) {
+  cursosCadastradosTbody.addEventListener("click", async (evt) => {
+    const target = evt.target as HTMLElement;
+
+    const editBtn = target.closest<HTMLButtonElement>(
+      'button[title="Editar"][data-id]',
+    );
+
+    if (editBtn) {
+      const cursoId = editBtn.dataset.id;
+      if (!cursoId) return;
+
+      const curso = await getCursoById(cursoId);
+
+      if (curso && cursoForm) {
+        const inputNome =
+          cursoForm.querySelector<HTMLInputElement>('[name="nome"]');
+        const inputPeriodo =
+          cursoForm.querySelector<HTMLInputElement>('[name="periodo"]');
+
+        if (inputNome) inputNome.value = curso.nome;
+        if (inputPeriodo) inputPeriodo.value = String(curso.periodo);
+
+        cursoEditandoId = cursoId;
+
+        const submitBtn = cursoForm.querySelector<HTMLButtonElement>(
+          "button[type='submit']",
+        );
+        if (submitBtn) submitBtn.textContent = "Atualizar";
+
+        cursoForm.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  });
+}
+
+// Chamadas Gerais
+
 carregarCursosSelect();
 listarAlunos();
+listarCursos();

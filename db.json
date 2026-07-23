@@ -27,8 +27,8 @@
       "periodo": 4
     },
     {
-      "nome": "Python",
-      "periodo": 1,
+      "nome": "Python: Full-Stack",
+      "periodo": 4,
       "id": "RBbFJedugVY"
     },
     {
@@ -40,6 +40,11 @@
       "nome": "UX/UI",
       "periodo": 3,
       "id": "h4JQGSBRIEA"
+    },
+    {
+      "nome": "Sistemas de Informação",
+      "periodo": 2,
+      "id": "556yU-DqIro"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
