@@ -1,7 +1,7 @@
 export default interface Aluno {
-  id?: String;
-  nome: String;
-  sexo: String;
+  id?: string;
+  nome: string;
+  sexo: string;
   dtNascimento: Date;
-  cursoId: String;
+  cursoId: string;
 }

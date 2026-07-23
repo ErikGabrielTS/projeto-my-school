@@ -1,5 +1,5 @@
 export default interface Curso {
-  id?: String;
-  nome: String;
+  id?: string;
+  nome: string;
   periodo: Number;
 }

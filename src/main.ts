@@ -1,4 +1,10 @@
-import { createAluno, getAllAluno, deleteAluno } from "./services/AlunoService";
+import {
+  createAluno,
+  getAllAluno,
+  deleteAluno,
+  updateAluno,
+  getAlunoById,
+} from "./services/AlunoService";
 import {
   createCurso,
   getAllCurso,
@@ -21,6 +27,8 @@ const emptyMessageP =
 
 const alunosCadastradosTable =
   document.querySelector<HTMLDivElement>("#alunos-cadastrados__table") || null;
+
+let alunoEditandoId: string | null = null;
 
 const showFeedback = (message: string) => {
   const existingFeedback = document.querySelector(".feedback-cadastro");
@@ -50,10 +58,27 @@ studentForm?.addEventListener("submit", async (evt) => {
     cursoId: formData.get("curso")?.toString() || "",
   };
 
-  await createAluno(aluno);
-  showFeedback("Aluno cadastrado com sucesso!");
-  studentForm.reset();
-  listarAlunos();
+  try {
+    if (alunoEditandoId) {
+      await updateAluno(alunoEditandoId, aluno);
+      showFeedback("Aluno atualizado com sucesso!");
+      alunoEditandoId = null;
+
+      const submitBtn = studentForm.querySelector<HTMLButtonElement>(
+        "button[type='submit']",
+      );
+      if (submitBtn) submitBtn.textContent = "Cadastrar Aluno";
+    } else {
+      await createAluno(aluno);
+      showFeedback("Aluno cadastrado com sucesso!");
+    }
+
+    studentForm.reset();
+    listarAlunos();
+  } catch (error) {
+    console.error("Erro ao salvar aluno:", error);
+    showFeedback("Erro ao salvar dados do aluno.");
+  }
 });
 
 cursoForm?.addEventListener("submit", (evt) => {
@@ -133,34 +158,68 @@ const carregarCursosSelect = async () => {
 if (alunosCadastradosTbody) {
   alunosCadastradosTbody.addEventListener("click", async (evt) => {
     const target = evt.target as HTMLElement;
-    const button = target.closest<HTMLButtonElement>(
+
+    const deleteBtn = target.closest<HTMLButtonElement>(
       'button[title="Excluir"][data-id]',
     );
+    if (deleteBtn) {
+      const alunoId = deleteBtn.dataset.id;
+      if (!alunoId) return;
 
-    if (!button) {
-      return;
-    }
+      const confirmed = window.confirm("Deseja realmente excluir este aluno?");
+      if (!confirmed) return;
 
-    const alunoId = button.dataset.id;
-    if (!alunoId) {
-      return;
-    }
-
-    const confirmed = window.confirm("Deseja realmente excluir este aluno?");
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      const success = await deleteAluno(alunoId);
-      if (success) {
-        showFeedback("Aluno excluído com sucesso!");
-        listarAlunos();
-      } else {
+      try {
+        const success = await deleteAluno(alunoId);
+        if (success) {
+          showFeedback("Aluno excluído com sucesso!");
+          listarAlunos();
+        } else {
+          showFeedback("Falha ao excluir o aluno.");
+        }
+      } catch {
         showFeedback("Falha ao excluir o aluno.");
       }
-    } catch {
-      showFeedback("Falha ao excluir o aluno.");
+      return;
+    }
+
+    const editBtn = target.closest<HTMLButtonElement>(
+      'button[title="Editar"][data-id]',
+    );
+    if (editBtn) {
+      const alunoId = editBtn.dataset.id;
+      if (!alunoId) return;
+
+      const aluno = await getAlunoById(alunoId);
+
+      if (aluno && studentForm) {
+        const inputNome =
+          studentForm.querySelector<HTMLInputElement>('[name="nome"]');
+        const inputNascimento = studentForm.querySelector<HTMLInputElement>(
+          '[name="nascimento"]',
+        );
+        const inputSexo =
+          studentForm.querySelector<HTMLInputElement>('[name="sexo"]');
+        const selectCurso =
+          studentForm.querySelector<HTMLSelectElement>('[name="curso"]');
+
+        if (inputNome) inputNome.value = aluno.nome;
+        if (inputNascimento) {
+          const data = new Date(aluno.dtNascimento);
+          inputNascimento.value = data.toISOString().split("T")[0];
+        }
+        if (inputSexo) inputSexo.value = aluno.sexo;
+        if (selectCurso) selectCurso.value = aluno.cursoId;
+
+        alunoEditandoId = alunoId;
+
+        const submitBtn = studentForm.querySelector<HTMLButtonElement>(
+          "button[type='submit']",
+        );
+        if (submitBtn) submitBtn.textContent = "Atualizar Aluno";
+
+        studentForm.scrollIntoView({ behavior: "smooth" });
+      }
     }
   });
 }
