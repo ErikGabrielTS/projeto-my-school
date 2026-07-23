@@ -198,8 +198,8 @@ if (alunosCadastradosTbody) {
         const inputNascimento = studentForm.querySelector<HTMLInputElement>(
           '[name="nascimento"]',
         );
-        const inputSexo =
-          studentForm.querySelector<HTMLInputElement>('[name="sexo"]');
+        const inputsSexo =
+          studentForm.querySelectorAll<HTMLInputElement>('input[name="sexo"]');
         const selectCurso =
           studentForm.querySelector<HTMLSelectElement>('[name="curso"]');
 
@@ -208,7 +208,9 @@ if (alunosCadastradosTbody) {
           const data = new Date(aluno.dtNascimento);
           inputNascimento.value = data.toISOString().split("T")[0];
         }
-        if (inputSexo) inputSexo.value = aluno.sexo;
+        inputsSexo.forEach((radio) => {
+          radio.checked = radio.value === aluno.sexo;
+        });
         if (selectCurso) selectCurso.value = aluno.cursoId;
 
         alunoEditandoId = alunoId;
