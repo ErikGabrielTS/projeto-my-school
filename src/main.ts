@@ -22,8 +22,6 @@ const emptyMessageP =
 const alunosCadastradosTable =
   document.querySelector<HTMLDivElement>("#alunos-cadastrados__table") || null;
 
-const cursos: Curso[] = await getAllCurso();
-
 const showFeedback = (message: string) => {
   const existingFeedback = document.querySelector(".feedback-cadastro");
   if (existingFeedback) {
@@ -40,7 +38,7 @@ const showFeedback = (message: string) => {
   }, 3000);
 };
 
-studentForm?.addEventListener("submit", (evt) => {
+studentForm?.addEventListener("submit", async (evt) => {
   evt.preventDefault();
 
   const formData = new FormData(studentForm);
@@ -52,9 +50,10 @@ studentForm?.addEventListener("submit", (evt) => {
     cursoId: formData.get("curso")?.toString() || "",
   };
 
-  createAluno(aluno);
+  await createAluno(aluno);
   showFeedback("Aluno cadastrado com sucesso!");
   studentForm.reset();
+  listarAlunos();
 });
 
 cursoForm?.addEventListener("submit", (evt) => {
@@ -117,12 +116,19 @@ const listarAlunos = async () => {
   }
 };
 
-if (cursosSelect) {
-  cursosSelect.innerHTML = `
-    <option value="" disabled selected>Selecione uma opção</option>
-    ${cursos.map((curso) => `<option value="${curso.id}">${curso.nome}</option>`).join("")}
-  `;
-}
+const carregarCursosSelect = async () => {
+  if (!cursosSelect) return;
+
+  try {
+    const cursos: Curso[] = await getAllCurso();
+    cursosSelect.innerHTML = `
+      <option value="" disabled selected>Selecione uma opção</option>
+      ${cursos.map((curso) => `<option value="${curso.id}">${curso.nome}</option>`).join("")}
+    `;
+  } catch (error) {
+    console.error("Erro ao carregar os cursos:", error);
+  }
+};
 
 if (alunosCadastradosTbody) {
   alunosCadastradosTbody.addEventListener("click", async (evt) => {
@@ -159,4 +165,5 @@ if (alunosCadastradosTbody) {
   });
 }
 
+carregarCursosSelect();
 listarAlunos();

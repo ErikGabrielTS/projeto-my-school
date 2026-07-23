@@ -8,11 +8,18 @@
       "id": "OhcKPsUB0xo"
     },
     {
-      "nome": "Ashley Andrade",
-      "dtNascimento": "2004-11-26T00:00:00.000Z",
+      "nome": "Sarah",
+      "dtNascimento": "2002-02-02T00:00:00.000Z",
       "sexo": "F",
       "cursoId": "geo9phSK13M",
-      "id": "FRIRx8bGZBc"
+      "id": "317hB6PHp9A"
+    },
+    {
+      "nome": "Erik",
+      "dtNascimento": "2001-01-01T00:00:00.000Z",
+      "sexo": "M",
+      "cursoId": "RBbFJedugVY",
+      "id": "hKQuccHw7-Q"
     }
   ],
   "curso": [
