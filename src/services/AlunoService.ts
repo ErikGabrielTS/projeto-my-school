@@ -1,6 +1,16 @@
 import type Aluno from "../types/Aluno";
 import { baseUrl } from "../config";
 
+export const getAllAluno = async (): Promise<Aluno[]> => {
+  const response = await fetch(`${baseUrl}/aluno`);
+
+  if (!response.ok) {
+    throw new Error(`Erro na requisição: ${response.status}`);
+  }
+
+  return await response.json();
+};
+
 export const createAluno = async (aluno: Aluno) => {
   const response = await fetch(`${baseUrl}/aluno`, {
     method: "POST",

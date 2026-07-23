@@ -1,5 +1,9 @@
-import { createAluno } from "./services/AlunoService";
-import { createCurso, getAllCurso } from "./services/CursoService";
+import { createAluno, getAllAluno, deleteAluno } from "./services/AlunoService";
+import {
+  createCurso,
+  getAllCurso,
+  getCursoById,
+} from "./services/CursoService";
 import "./style.css";
 import type Aluno from "./types/Aluno";
 import type Curso from "./types/Curso";
@@ -10,6 +14,13 @@ const cursoForm =
   document.querySelector<HTMLFormElement>("#form-curso") || null;
 const cursosSelect =
   document.querySelector<HTMLSelectElement>("#cursos") || null;
+const alunosCadastradosTbody =
+  document.querySelector<HTMLDivElement>("#alunos-cadastrados__tbody") || null;
+const emptyMessageP =
+  document.querySelector<HTMLParagraphElement>("#empty-message") || null;
+
+const alunosCadastradosTable =
+  document.querySelector<HTMLDivElement>("#alunos-cadastrados__table") || null;
 
 const cursos: Curso[] = await getAllCurso();
 
@@ -61,9 +72,91 @@ cursoForm?.addEventListener("submit", (evt) => {
   cursoForm.reset();
 });
 
+const listarAlunos = async () => {
+  const alunos: Aluno[] = await getAllAluno();
+
+  if (alunosCadastradosTbody && alunosCadastradosTable && emptyMessageP) {
+    if (alunos.length === 0) {
+      alunosCadastradosTable.classList.add("disabled");
+      emptyMessageP.classList.remove("disabled");
+      alunosCadastradosTbody.innerHTML = "";
+      return;
+    }
+
+    alunosCadastradosTable.classList.remove("disabled");
+    emptyMessageP.classList.add("disabled");
+
+    const alunosComCurso = await Promise.all(
+      alunos.map(async (aluno) => {
+        const curso = await getCursoById(aluno.cursoId);
+        return { ...aluno, nomeCurso: curso ? curso.nome : "Não encontrado" };
+      }),
+    );
+
+    const tbodyContent = alunosComCurso
+      .map(
+        (aluno) => `
+      <tr>
+        <td>${aluno.nome}</td>
+        <td>${new Date(aluno.dtNascimento).toLocaleDateString("pt-BR", { timeZone: "UTC" })}</td>
+        <td>${aluno.nomeCurso}</td>
+        <td class="acoes">
+          <button type="button" class="btn-acao" title="Editar" data-id="${aluno.id}">
+            <img src="/icons/edit.png" alt="Editar" />
+          </button>
+          <button type="button" class="btn-acao" title="Excluir" data-id="${aluno.id}">
+            <img src="/icons/trash.png" alt="Excluir" />
+          </button>
+        </td>
+      </tr>
+    `,
+      )
+      .join("");
+
+    alunosCadastradosTbody.innerHTML = tbodyContent;
+  }
+};
+
 if (cursosSelect) {
   cursosSelect.innerHTML = `
     <option value="" disabled selected>Selecione uma opção</option>
     ${cursos.map((curso) => `<option value="${curso.id}">${curso.nome}</option>`).join("")}
   `;
 }
+
+if (alunosCadastradosTbody) {
+  alunosCadastradosTbody.addEventListener("click", async (evt) => {
+    const target = evt.target as HTMLElement;
+    const button = target.closest<HTMLButtonElement>(
+      'button[title="Excluir"][data-id]',
+    );
+
+    if (!button) {
+      return;
+    }
+
+    const alunoId = button.dataset.id;
+    if (!alunoId) {
+      return;
+    }
+
+    const confirmed = window.confirm("Deseja realmente excluir este aluno?");
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const success = await deleteAluno(alunoId);
+      if (success) {
+        showFeedback("Aluno excluído com sucesso!");
+        listarAlunos();
+      } else {
+        showFeedback("Falha ao excluir o aluno.");
+      }
+    } catch {
+      showFeedback("Falha ao excluir o aluno.");
+    }
+  });
+}
+
+listarAlunos();

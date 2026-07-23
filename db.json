@@ -11,22 +11,8 @@
       "nome": "Ashley Andrade",
       "dtNascimento": "2004-11-26T00:00:00.000Z",
       "sexo": "F",
-      "cursoId": "7TmIdRdzyjo",
+      "cursoId": "geo9phSK13M",
       "id": "FRIRx8bGZBc"
-    },
-    {
-      "nome": "Helio Marcus",
-      "dtNascimento": "2007-05-10T00:00:00.000Z",
-      "sexo": "M",
-      "cursoId": "F5OsD_G88Rs",
-      "id": "8ECLCnXDXxI"
-    },
-    {
-      "nome": "Toni Chocolate",
-      "dtNascimento": "2004-12-07T00:00:00.000Z",
-      "sexo": "F",
-      "cursoId": "h4JQGSBRIEA",
-      "id": "cM2MGVheatQ"
     }
   ],
   "curso": [

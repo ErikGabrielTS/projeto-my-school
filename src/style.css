@@ -23,6 +23,10 @@ body {
   color: var(--text);
 }
 
+a {
+  text-decoration: none;
+}
+
 #app {
   max-width: 1200px;
   margin: auto;
@@ -285,6 +289,40 @@ footer {
   z-index: 999;
 }
 
+.has-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.has-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background-color: #333;
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+  pointer-events: none;
+}
+
+/* Mostra a tooltip no hover */
+.has-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
 @keyframes fade {
   0% {
     opacity: 0;
@@ -337,4 +375,101 @@ footer {
   form div {
     flex-direction: column;
   }
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+th,
+td {
+  padding: 14px 16px;
+  text-align: left;
+}
+
+thead {
+  background-color: var(--input);
+}
+
+th {
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr {
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:not(:last-child) td {
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+td {
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+td.acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: none;
+}
+
+.btn-acao {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-acao img {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(0.9);
+}
+
+.btn-acao:hover {
+  background: var(--input);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.btn-acao[title="Editar"]:hover {
+  border-color: var(--primary);
+}
+
+.btn-acao[title="Excluir"]:hover {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+@media (max-width: 600px) {
+  .alunos-cadastrados {
+    overflow-x: auto;
+  }
+}
+
+.disabled {
+  display: none;
 }

@@ -1,6 +1,16 @@
 import { baseUrl } from "../config";
 import type Curso from "../types/Curso";
 
+export const getCursoById = async (id: String): Promise<Curso> => {
+  const response = await fetch(`${baseUrl}/curso/${id}`);
+
+  if (!response.ok) {
+    throw new Error(`Erro na requisição: ${response.status}`);
+  }
+
+  return await response.json();
+};
+
 export const getAllCurso = async (): Promise<Curso[]> => {
   const response = await fetch(`${baseUrl}/curso`);
 

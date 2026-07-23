@@ -9,12 +9,16 @@
   <body>
     <div id="app">
       <header>
-        <h1>MySchool</h1>
+        <a href="/index.html"><h1>MySchool</h1></a>
         <nav>
           <ul>
             <li>
-              <a href="/src/pages/cadastrarCurso.html">
-                <img src="/public/icons/graduation-cap.png" alt="Cursos" />
+              <a
+                href="/src/pages/cadastrarCurso.html"
+                class="has-tooltip"
+                data-tooltip="Cursos"
+              >
+                <img src="/icons/graduation-cap.png" alt="Cursos" />
               </a>
             </li>
           </ul>
@@ -24,7 +28,22 @@
         <section>
           <h2>Alunos Cadastrados no Sistema</h2>
 
-          <div class="alunos-cadastrados"></div>
+          <div class="alunos-cadastrados">
+            <p id="empty-message" class="disabled">
+              Nenhum aluno cadastrado ainda.
+            </p>
+            <table id="alunos-cadastrados__table" class="disabled">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Data de Nascimento</th>
+                  <th>Curso</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="alunos-cadastrados__tbody"></tbody>
+            </table>
+          </div>
         </section>
 
         <section>
